@@ -1,0 +1,27 @@
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLBusinessLayer.dll
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLBusinessLayer.pdb
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLDataAccess.dll
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLDataAccess.pdb
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.csproj.AssemblyReference.cache
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.csproj.CoreCompileInputs.cache
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusin.B4FFC293.Up2Date
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.dll
+D:\Programmer\Full Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.pdb
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLBusinessLayer.dll
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLBusinessLayer.pdb
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLDataAccess.dll
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\bin\Debug\DVLDataAccess.pdb
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.csproj.AssemblyReference.cache
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.csproj.CoreCompileInputs.cache
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusin.B4FFC293.Up2Date
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.dll
+D:\Programmer\C# .net Projects\DVL Management System\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.pdb
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\bin\Debug\DVLBusinessLayer.dll
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\bin\Debug\DVLBusinessLayer.pdb
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\bin\Debug\DVLDataAccess.dll
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\bin\Debug\DVLDataAccess.pdb
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.csproj.AssemblyReference.cache
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.csproj.CoreCompileInputs.cache
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\obj\Debug\DVLBusin.B4FFC293.Up2Date
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.dll
+D:\Programmer\FullProjects\DVLManagementSystem\DVLBusinessLayer\obj\Debug\DVLBusinessLayer.pdb

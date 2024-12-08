@@ -1,0 +1,18 @@
+D:\Programmer\Full Projects\DVL Management System\DVLDataAccess\bin\Debug\DVLDataAccess.dll
+D:\Programmer\Full Projects\DVL Management System\DVLDataAccess\bin\Debug\DVLDataAccess.pdb
+D:\Programmer\Full Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.AssemblyReference.cache
+D:\Programmer\Full Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.CoreCompileInputs.cache
+D:\Programmer\Full Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.dll
+D:\Programmer\Full Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.pdb
+D:\Programmer\C# .net Projects\DVL Management System\DVLDataAccess\bin\Debug\DVLDataAccess.dll
+D:\Programmer\C# .net Projects\DVL Management System\DVLDataAccess\bin\Debug\DVLDataAccess.pdb
+D:\Programmer\C# .net Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.AssemblyReference.cache
+D:\Programmer\C# .net Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.CoreCompileInputs.cache
+D:\Programmer\C# .net Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.dll
+D:\Programmer\C# .net Projects\DVL Management System\DVLDataAccess\obj\Debug\DVLDataAccess.pdb
+D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\bin\Debug\DVLDataAccess.dll
+D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\bin\Debug\DVLDataAccess.pdb
+D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.AssemblyReference.cache
+D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.CoreCompileInputs.cache
+D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAccess.dll
+D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAccess.pdb
