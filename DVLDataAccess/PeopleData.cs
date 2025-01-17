@@ -19,9 +19,12 @@ namespace DVLDataAccess
             bool Found = false;
 
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
+            try
+            {
 
-            string query = @"SELECT People.PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, 
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    string query = @"SELECT People.PersonID, People.NationalNo, People.FirstName, People.SecondName, People.ThirdName, People.LastName, People.DateOfBirth, 
                                    CASE
                                        WHEN Gendor = 0 THEN 'Male'
                                        WHEN Gendor = 1 THEN 'Female'
@@ -32,80 +35,75 @@ namespace DVLDataAccess
                                               Countries ON People.NationalityCountryID = Countries.CountryID
                             where PersonID = @ID ";
 
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@ID", ID);
-
-            try
-            {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    Found = true;
-
-                    NationalNo = (string)reader["NationalNo"];
-                    FirstName = (string)reader["FirstName"];
-
-                    if (reader["SecondName"] == DBNull.Value)
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        SecondName = "";
+                        command.Parameters.AddWithValue("@ID", ID);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Found = true;
+
+                                NationalNo = (string)reader["NationalNo"];
+                                FirstName = (string)reader["FirstName"];
+
+                                if (reader["SecondName"] == DBNull.Value)
+                                {
+                                    SecondName = "";
+                                }
+                                else
+                                {
+                                    SecondName = (string)reader["SecondName"];
+                                }
+
+
+                                if (reader["ThirdName"] == DBNull.Value)
+                                {
+                                    ThirdName = "";
+                                }
+                                else
+                                {
+                                    ThirdName = (string)reader["ThirdName"];
+                                }
+
+                                LastName = (string)reader["LastName"];
+                                DateOfBirth = (DateTime)reader["DateOfBirth"];
+                                Gendor = (string)reader["Gendor"];
+                                Address = (string)reader["Address"];
+                                Phone = (string)reader["Phone"];
+
+
+                                if (reader["Email"] == DBNull.Value)
+                                {
+                                    Email = "";
+                                }
+                                else
+                                {
+                                    Email = (string)reader["Email"];
+                                }
+
+                                CountryID = (int)reader["NationalityCountryID"];
+
+                                if (reader["ImagePath"] == DBNull.Value)
+                                {
+                                    ImagePath = "";
+                                }
+                                else
+                                {
+                                    ImagePath = (string)reader["ImagePath"];
+                                }
+                            }
+                        }    
+
                     }
-                    else
-                    {
-                        SecondName = (string)reader["SecondName"];
-                    }
-
-
-                    if (reader["ThirdName"] == DBNull.Value)
-                    {
-                        ThirdName = "";
-                    }
-                    else
-                    {
-                        ThirdName = (string)reader["ThirdName"];
-                    }
-
-                    LastName = (string)reader["LastName"];
-                    DateOfBirth = (DateTime)reader["DateOfBirth"];
-                    Gendor = (string)reader["Gendor"];
-                    Address = (string)reader["Address"];
-                    Phone = (string)reader["Phone"];
-
-
-                    if (reader["Email"] == DBNull.Value)
-                    {
-                        Email = "";
-                    }
-                    else
-                    {
-                        Email = (string)reader["Email"];
-                    }
-
-                    CountryID = (int)reader["NationalityCountryID"];
-
-                    if (reader["ImagePath"] == DBNull.Value)
-                    {
-                        ImagePath = "";
-                    }
-                    else
-                    {
-                        ImagePath = (string)reader["ImagePath"];
-                    }
-
-
+                       
                 }
-
-                reader.Close();
-
             }
             catch (Exception ex)
             {
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
 

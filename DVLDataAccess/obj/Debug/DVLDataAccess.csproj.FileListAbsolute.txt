@@ -16,3 +16,9 @@ D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAc
 D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.CoreCompileInputs.cache
 D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAccess.dll
 D:\Programmer\FullProjects\DVLManagementSystem\DVLDataAccess\obj\Debug\DVLDataAccess.pdb
+C:\Users\anouer\Desktop\Driving-License\DVLDataAccess\bin\Debug\DVLDataAccess.dll
+C:\Users\anouer\Desktop\Driving-License\DVLDataAccess\bin\Debug\DVLDataAccess.pdb
+C:\Users\anouer\Desktop\Driving-License\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.AssemblyReference.cache
+C:\Users\anouer\Desktop\Driving-License\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.CoreCompileInputs.cache
+C:\Users\anouer\Desktop\Driving-License\DVLDataAccess\obj\Debug\DVLDataAccess.dll
+C:\Users\anouer\Desktop\Driving-License\DVLDataAccess\obj\Debug\DVLDataAccess.pdb
