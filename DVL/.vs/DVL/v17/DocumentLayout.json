@@ -3,10 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\anouer\\Desktop\\Driving-License\\DVL\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{13A5C16A-90F6-4132-8985-0080CFE084C4}|..\\DVLDataAccess\\DVLDataAccess.csproj|c:\\users\\anouer\\desktop\\driving-license\\dvldataaccess\\peopledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3A440AF7-331D-469D-93D2-E495791831B0}|DVL.csproj|c:\\users\\anouer\\desktop\\driving-license\\dvl\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{3A440AF7-331D-469D-93D2-E495791831B0}|DVL.csproj|C:\\Users\\anouer\\Desktop\\Driving-License\\DVL\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{3A440AF7-331D-469D-93D2-E495791831B0}|DVL.csproj|solutionrelative:main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -22,19 +19,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "PeopleData.cs",
-              "DocumentMoniker": "C:\\Users\\anouer\\Desktop\\Driving-License\\DVLDataAccess\\PeopleData.cs",
-              "RelativeDocumentMoniker": "..\\DVLDataAccess\\PeopleData.cs",
-              "ToolTip": "C:\\Users\\anouer\\Desktop\\Driving-License\\DVLDataAccess\\PeopleData.cs",
-              "RelativeToolTip": "..\\DVLDataAccess\\PeopleData.cs",
-              "ViewState": "AgIAAFsBAAAAAAAAAAAqwLUBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T06:55:14.416Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "Main.cs [Design]",
               "DocumentMoniker": "C:\\Users\\anouer\\Desktop\\Driving-License\\DVL\\Main.cs",
               "RelativeDocumentMoniker": "Main.cs",
