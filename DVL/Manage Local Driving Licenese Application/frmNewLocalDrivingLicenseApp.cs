@@ -1,4 +1,5 @@
-﻿using DVL.User;
+﻿using DVL.Global_Classes;
+using DVL.User;
 using DVLBusinessLayer;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace DVL.New_Driving_Licenese_Application
 
             lbFees.Text = clsApplicationsTypes.GetApplicationFee(1).ToString();
 
-            lbCreatedBy.Text = clsUser.GetUserNameOfCurrentUser( frmLogin.LoginInstance.UserID );
+            lbCreatedBy.Text = clsUser.GetUserNameOfCurrentUser(clsUserLog.user.UserID );
 
         }
 
@@ -109,7 +110,7 @@ namespace DVL.New_Driving_Licenese_Application
             application.ApplicationStatus = 1;
             application.LastStatusDate = DateTime.Now;
             application.PaidFees = clsApplicationsTypes.GetApplicationFee(1);
-            application.UserID = frmLogin.LoginInstance.UserID;
+            application.UserID = clsUserLog.user.UserID;
 
             if (application.Save())
             {

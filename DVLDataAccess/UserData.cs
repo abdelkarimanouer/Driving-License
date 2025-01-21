@@ -7,6 +7,8 @@ using System.Data.SqlClient;
 using System.CodeDom.Compiler;
 using System.Data;
 using System.IO;
+using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace DVLDataAccess
 {
@@ -583,39 +585,72 @@ namespace DVLDataAccess
             return ( RowEffected > 0 ) ;
         }
 
-
-        public static void SaveUserDataInFile(string UserName, string Password)
+        public static void SaveUserDataInRegistry(string UserName, string Password)
         {
-            string userData = $"{UserName}#//#{Password}";
+            string KeyPath = @"HKEY_CURRENT_USER\SOFTWARE\DVL";
+            
+            string vnusername = "UserName";
+            string vdusername = UserName;
 
-            File.WriteAllText("userData.txt", userData);
+            string vnpassword = "Password";
+            string vdpassword = Password;
 
+            try
+            {
+                Registry.SetValue(KeyPath, vnusername, vdusername, RegistryValueKind.String);
+                Registry.SetValue(KeyPath, vnpassword, vdpassword , RegistryValueKind.String);
+            }
+            catch 
+            {
+                
+            }
         }
 
         public static void DeleteRecordFromFile()
         {
-            File.WriteAllText("userData.txt", string.Empty);
+            string KeyPath = @"SOFTWARE\DVL";
+
+            string vnusername = "UserName";
+            string vnpassword = "Password";
+
+            try
+            {
+                using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64))
+                {
+                    using (RegistryKey key = baseKey.OpenSubKey(KeyPath, true))
+                    {
+                        if (key != null)
+                        {
+                            key.DeleteValue(vnusername);
+                            key.DeleteValue(vnpassword);
+
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Registry key '{KeyPath}' not found");
+                        }
+                    }
+                }
+            }
+            catch { }
+
         }
 
         public static void GetUserFromFileIfSaveHisInfoInLastLogin(ref string UserName, ref string Password)
         {
-            string filePath = "userData.txt";
+            string KeyPath = @"HKEY_CURRENT_USER\SOFTWARE\DVL";
 
-            if (File.Exists(filePath) && new FileInfo(filePath).Length > 0)
+            string vnusername = "UserName";
+            string vnpassword = "Password";
+
+            try
             {
-                string userData = File.ReadAllText(filePath);
-                string[] dataParts = userData.Split(new string[] { "#//#" }, StringSplitOptions.None);
-
-                if (dataParts.Length == 2)
-                {
-                    UserName = dataParts[0].Trim();
-                    Password = dataParts[1].Trim();
-                }
+                UserName = Registry.GetValue(KeyPath, vnusername, null) as string;
+                Password = Registry.GetValue(KeyPath, vnpassword, null) as string;
             }
-            else
+            catch 
             {
-                UserName = null;
-                Password = null;
+
             }
         }
 

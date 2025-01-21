@@ -55,6 +55,7 @@
     <Compile Include="Drivers\frmManageDrivers.Designer.cs">
       <DependentUpon>frmManageDrivers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Global Classes\clsUserLog.cs" />
     <Compile Include="Global Classes\Util.cs" />
     <Compile Include="Licenses\frmLicenseInfo.cs">
       <SubType>Form</SubType>

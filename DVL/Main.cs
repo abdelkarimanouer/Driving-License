@@ -1,4 +1,5 @@
 ﻿using DVL.Drivers;
+using DVL.Global_Classes;
 using DVL.Licenses;
 using DVL.Manage_Applications_Types;
 using DVL.Manage_Detain_License;
@@ -37,6 +38,7 @@ namespace DVL
 
         private void signOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            clsUserLog.user = null;
             this.Close();
         }
 
@@ -48,14 +50,14 @@ namespace DVL
 
         private void currentUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmUserDetails userDetails = new frmUserDetails( frmLogin.LoginInstance.UserID );
+            frmUserDetails userDetails = new frmUserDetails(clsUserLog.user.UserID);
             userDetails.ShowDialog();
 
         }
 
         private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmChangePassword changePassword = new frmChangePassword( frmLogin.LoginInstance.UserID );
+            frmChangePassword changePassword = new frmChangePassword( clsUserLog.user.UserID );
             changePassword.ShowDialog();
         }
 

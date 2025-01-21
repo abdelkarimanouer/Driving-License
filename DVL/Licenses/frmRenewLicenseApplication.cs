@@ -1,4 +1,5 @@
-﻿using DVL.User;
+﻿using DVL.Global_Classes;
+using DVL.User;
 using DVLBusinessLayer;
 using System;
 using System.Windows.Forms;
@@ -44,7 +45,7 @@ namespace DVL.Licenses
                 lbExpirationDate.Text = DateTime.Now.AddYears(10).ToString("d");
             }
 
-            lbCreatedBy.Text = frmLogin.LoginInstance.UserID.ToString();
+            lbCreatedBy.Text = clsUserLog.user.UserID.ToString();
 
             decimal Total = Convert.ToDecimal(lbApplicationFees.Text) + Convert.ToDecimal(lbLicenseFees.Text);
             lbTotalFees.Text = Total.ToString();
@@ -94,7 +95,7 @@ namespace DVL.Licenses
             application.ApplicationStatus = 3;
             application.LastStatusDate = DateTime.Now;
             application.PaidFees = Convert.ToDecimal( lbTotalFees.Text );
-            application.UserID = frmLogin.LoginInstance.UserID;
+            application.UserID = clsUserLog.user.UserID;
 
             if (application.Save())
             {
@@ -116,7 +117,7 @@ namespace DVL.Licenses
                 license.PaidFees = application.PaidFees;
                 license.IsActive = true;
                 license.IssueReason = 2;
-                license.CreatedByUserID = frmLogin.LoginInstance.UserID;
+                license.CreatedByUserID = clsUserLog.user.UserID;
 
                 if (license.AddNewLicense() )
                 {

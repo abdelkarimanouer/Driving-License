@@ -1,4 +1,5 @@
-﻿using DVLBusinessLayer;
+﻿using DVL.Global_Classes;
+using DVLBusinessLayer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,13 +14,10 @@ namespace DVL.User
 {
     public partial class frmLogin : Form
     {
-        public static frmLogin LoginInstance = new frmLogin();
-        public int UserID { get; set; }
 
         public frmLogin()
         {
             InitializeComponent();
-            LoginInstance = this;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -43,7 +41,7 @@ namespace DVL.User
                 return;
             }
 
-            UserID = user.UserID;
+            clsUserLog.user = user;
 
             if (chbRememberme.Checked)
             {

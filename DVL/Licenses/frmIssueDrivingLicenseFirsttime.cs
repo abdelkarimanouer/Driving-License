@@ -1,4 +1,5 @@
-﻿using DVL.User;
+﻿using DVL.Global_Classes;
+using DVL.User;
 using DVLBusinessLayer;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace DVL.Manage_Local_Driving_Licenese_Application
 
             clsDrivers driver = new clsDrivers();
             driver.PersonID = clsApplications.GetApplicationInfo(ApplicationID).PersonID;
-            driver.CreatedByUserID = frmLogin.LoginInstance.UserID;
+            driver.CreatedByUserID = clsUserLog.user.UserID ;
             driver.CreatedDate = DateTime.Now;
 
             if (driver.AddNewDriver())
@@ -69,7 +70,7 @@ namespace DVL.Manage_Local_Driving_Licenese_Application
                 license.PaidFees = application.PaidFees;
                 license.IsActive = true;
                 license.IssueReason = 1;
-                license.CreatedByUserID = frmLogin.LoginInstance.UserID;
+                license.CreatedByUserID = clsUserLog.user.UserID;
 
                 if (license.AddNewLicense())
                 {

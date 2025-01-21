@@ -1,4 +1,5 @@
-﻿using DVL.User;
+﻿using DVL.Global_Classes;
+using DVL.User;
 using DVLBusinessLayer;
 using System;
 using System.Collections.Generic;
@@ -101,13 +102,13 @@ namespace DVL.Manage_Detain_License
             application.ApplicationStatus = 3;
             application.LastStatusDate = DateTime.Now;
             application.PaidFees = Convert.ToDecimal(lbtotalFees.Text);
-            application.UserID = frmLogin.LoginInstance.UserID;
+            application.UserID = clsUserLog.user.UserID;
 
             if (application.Save())
             {
                 DetainedLicense.IsReleased = true;
                 DetainedLicense.ReleaseDate = DateTime.Now;
-                DetainedLicense.ReleasedByUserID = frmLogin.LoginInstance.UserID;
+                DetainedLicense.ReleasedByUserID = clsUserLog.user.UserID;
                 DetainedLicense.ReleaseApplicationID = application.ApplicationID;
 
                 if (DetainedLicense.Save())

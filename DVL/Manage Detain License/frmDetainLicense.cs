@@ -1,4 +1,5 @@
-﻿using DVL.Licenses;
+﻿using DVL.Global_Classes;
+using DVL.Licenses;
 using DVL.User;
 using DVLBusinessLayer;
 using System;
@@ -61,7 +62,7 @@ namespace DVL.Manage_Detain_License
             lbDetainDate.Text = DateTime.Now.ToString("d");
             lbFees.Text = "150";
             lbLicenseID.Text = driverLicense.LicenseID.ToString();
-            lbCreatedBy.Text = clsUser.GetUserNameOfCurrentUser( frmLogin.LoginInstance.UserID );
+            lbCreatedBy.Text = clsUser.GetUserNameOfCurrentUser( clsUserLog.user.UserID );
 
         }
 
@@ -82,7 +83,7 @@ namespace DVL.Manage_Detain_License
             DetainedLicense.LicenseID = driverLicense.LicenseID;
             DetainedLicense.DetainDate = DateTime.Now;
             DetainedLicense.FineFees = Convert.ToDecimal( lbFees.Text );
-            DetainedLicense.CreatedByUserID = frmLogin.LoginInstance.UserID;
+            DetainedLicense.CreatedByUserID = clsUserLog.user.UserID;
             DetainedLicense.IsReleased = false;
 
             if (DetainedLicense.Save())

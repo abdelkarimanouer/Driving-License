@@ -158,7 +158,7 @@ namespace DVLBusinessLayer
 
         public void SaveUserDataInFile()
         {
-            clsUserData.SaveUserDataInFile(UserName, Password);
+            clsUserData.SaveUserDataInRegistry(UserName, Password);
         }
 
         public static void DeleteRecordFromFile()

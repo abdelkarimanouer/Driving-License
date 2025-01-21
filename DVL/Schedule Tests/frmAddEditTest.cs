@@ -1,4 +1,5 @@
-﻿using DVL.User;
+﻿using DVL.Global_Classes;
+using DVL.User;
 using DVLBusinessLayer;
 using System;
 using System.Collections.Generic;
@@ -154,7 +155,7 @@ namespace DVL.Schedule_Tests
                 _appointment.LocalDLAppID = _LocalDLAppID;
                 _appointment.Date = dtpDate.Value;
                 _appointment.PaidFees = Convert.ToDecimal(lbTotalFees.Text);
-                _appointment.CreatedByUserID = frmLogin.LoginInstance.UserID;
+                _appointment.CreatedByUserID = clsUserLog.user.UserID;
                 _appointment.IsLocked = false;
 
 

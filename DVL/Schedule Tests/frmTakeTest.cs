@@ -1,4 +1,5 @@
-﻿using DVL.User;
+﻿using DVL.Global_Classes;
+using DVL.User;
 using DVLBusinessLayer;
 using System;
 using System.Collections.Generic;
@@ -86,7 +87,7 @@ namespace DVL.Schedule_Tests
             }
 
             test.Notes = txtNotes.Text;
-            test.CreatedByUserID = frmLogin.LoginInstance.UserID;
+            test.CreatedByUserID = clsUserLog.user.UserID;
 
             if (test.Save())
             {

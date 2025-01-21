@@ -1,4 +1,5 @@
-﻿using DVL.User;
+﻿using DVL.Global_Classes;
+using DVL.User;
 using DVLBusinessLayer;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace DVL.Licenses
             lbApplicationDate.Text = DateTime.Now.ToString("d");
             lbFees.Text = clsApplicationsTypes.GetApplicationFee(4).ToString();
             lbOldLicenseID.Text = driverLicense.LicenseID.ToString();
-            lbCreatedBy.Text = frmLogin.LoginInstance.UserID.ToString();
+            lbCreatedBy.Text = clsUserLog.user.UserID.ToString();
 
         }
 
@@ -84,7 +85,7 @@ namespace DVL.Licenses
             application.ApplicationStatus = 3;
             application.LastStatusDate = DateTime.Now;
             application.PaidFees = Convert.ToDecimal(lbFees.Text);
-            application.UserID = frmLogin.LoginInstance.UserID;
+            application.UserID = clsUserLog.user.UserID;
 
             if (application.Save())
             {
@@ -115,7 +116,7 @@ namespace DVL.Licenses
                     license.IssueReason = 4;
                 }
 
-                license.CreatedByUserID = frmLogin.LoginInstance.UserID;
+                license.CreatedByUserID = clsUserLog.user.UserID;
 
                 if (license.AddNewLicense())
                 {

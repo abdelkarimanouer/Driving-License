@@ -1,4 +1,5 @@
-﻿using DVL.Licenses;
+﻿using DVL.Global_Classes;
+using DVL.Licenses;
 using DVL.User;
 using DVLBusinessLayer;
 using System;
@@ -37,7 +38,7 @@ namespace DVL.Manage_Interantional_License_App
             lbFees.Text = clsApplicationsTypes.GetApplicationFee(6).ToString();
             lbLocalLicenseID.Text = driverLicense.LicenseID.ToString();
             lbExpirationDate.Text = driverLicense.ExpirationDate.ToString("d");
-            lbCreatedBy.Text = clsUser.GetUserNameOfCurrentUser(frmLogin.LoginInstance.UserID);
+            lbCreatedBy.Text = clsUser.GetUserNameOfCurrentUser(clsUserLog.user.UserID);
         }
 
         private void frmNewInternationalLicenseApp_Load(object sender, EventArgs e)
@@ -102,7 +103,7 @@ namespace DVL.Manage_Interantional_License_App
             application.ApplicationStatus = 3;
             application.LastStatusDate = DateTime.Now;
             application.PaidFees = Convert.ToDecimal(lbFees.Text);
-            application.UserID = frmLogin.LoginInstance.UserID;
+            application.UserID = clsUserLog.user.UserID;
 
             if (application.Save())
             {
