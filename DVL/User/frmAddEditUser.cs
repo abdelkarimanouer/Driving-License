@@ -120,6 +120,7 @@ namespace DVL.User
 
             user.PersonID = ucFilterAndFindPerson.PersonID;
             user.UserName = txtUserName.Text;
+
             user.Password = txtPassword.Text;
             user.IsActive = cbIsActive.Checked;
 
@@ -161,8 +162,6 @@ namespace DVL.User
 
             lbUserID.Text = user.UserID.ToString();
             txtUserName.Text = user.UserName;
-            txtPassword.Text = user.Password;
-            txtConfirmPassword.Text = user.Password;
             cbIsActive.Checked = user.IsActive;
 
         }

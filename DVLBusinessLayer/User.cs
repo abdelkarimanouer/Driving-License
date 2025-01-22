@@ -26,8 +26,9 @@ namespace DVLBusinessLayer
         {
             int userId = -1, personId = -1;
             bool isactive = false;
+            string pw = HashingPassword.ComputeHash(password);
 
-            if ( clsUserData.FindUserByUserNameAndPassword(username, password, ref userId, ref personId, ref isactive) )
+            if ( clsUserData.FindUserByUserNameAndPassword(username, pw, ref userId, ref personId, ref isactive) )
             {
                 return new clsUser( userId, username, password, personId, isactive );
             }
@@ -60,12 +61,14 @@ namespace DVLBusinessLayer
 
         private bool _UpdateUser()
         {
-           return clsUserData.UpdateUser(UserID, UserName, Password, IsActive);
+            string pw = HashingPassword.ComputeHash(Password);
+            return clsUserData.UpdateUser(UserID, UserName, pw, IsActive);
         }
 
         private bool _AddNewUser()
         {
-            UserID = clsUserData.AddNewUser( PersonID, UserName, Password, IsActive );
+            string pw = HashingPassword.ComputeHash(Password);
+            UserID = clsUserData.AddNewUser( PersonID, UserName, pw, IsActive );
             return (UserID != -1);
         }
 
@@ -156,9 +159,9 @@ namespace DVLBusinessLayer
             _Mode = enMode.Update;
         }
 
-        public void SaveUserDataInFile()
+        public void SaveUserDataInFile(string password)
         {
-            clsUserData.SaveUserDataInRegistry(UserName, Password);
+            clsUserData.SaveUserDataInRegistry(this.UserName, password);
         }
 
         public static void DeleteRecordFromFile()

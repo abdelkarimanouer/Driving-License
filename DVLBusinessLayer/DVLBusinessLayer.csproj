@@ -47,6 +47,7 @@
     <Compile Include="Countries.cs" />
     <Compile Include="DetainedLicense.cs" />
     <Compile Include="ErrorLoggerBLL.cs" />
+    <Compile Include="HashingPassword.cs" />
     <Compile Include="InfoDriverLicense.cs" />
     <Compile Include="Drivers.cs" />
     <Compile Include="InternationalLicense.cs" />

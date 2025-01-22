@@ -38,7 +38,8 @@ namespace DVL.User
 
             if (user != null) 
             {
-                if (user.Password != txtCurrentPassword.Text)
+                string pw = HashingPassword.ComputeHash(txtCurrentPassword.Text);
+                if (user.Password != pw)
                 {
                     errorProvider1.SetError(txtCurrentPassword, "Current Password is Wrong!");
                     txtCurrentPassword.Focus();

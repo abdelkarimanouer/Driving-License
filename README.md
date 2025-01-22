@@ -6,10 +6,10 @@ To run the project, follow these steps:
 ### 2- Open SQL Server Management Studio (SSMS). If you don’t have it, download and install it first.  
 ### 3- Run the following query in SSMS to restore the database:  
 
-   ```sql
+
    RESTORE DATABASE DVLD  
    FROM DISK = 'C:\DVLD.bak'
-   ```
+  
 
 ### 4- After restoring the database, open the `DVL.exe` file located in the `\DVL\bin\Release` folder to run the application.
 

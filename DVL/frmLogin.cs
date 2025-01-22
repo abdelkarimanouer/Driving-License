@@ -45,7 +45,7 @@ namespace DVL.User
 
             if (chbRememberme.Checked)
             {
-                user.SaveUserDataInFile();
+                user.SaveUserDataInFile(txtPassword.Text);
             }
             else
             {
