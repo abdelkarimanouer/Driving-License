@@ -47,8 +47,9 @@ namespace DVLDataAccess
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -80,8 +81,9 @@ namespace DVLDataAccess
                     Faild = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Faild = false;
             }
             finally

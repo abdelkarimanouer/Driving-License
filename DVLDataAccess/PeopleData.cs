@@ -103,6 +103,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
 
@@ -199,6 +200,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
             finally
@@ -291,6 +293,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 IDPerson = -1;
             }
             finally
@@ -389,7 +392,8 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
-               
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+
             }
             finally
             {
@@ -424,6 +428,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -477,8 +482,9 @@ namespace DVLDataAccess
                 reader.Close();
 
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally 
@@ -528,6 +534,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -577,6 +584,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -626,6 +634,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -675,7 +684,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
-
+                clsErrorLoggerDAL.EventLogError(ex.Message);
             }
             finally
             {
@@ -724,6 +733,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -773,6 +783,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -825,6 +836,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -874,7 +886,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
-
+                clsErrorLoggerDAL.EventLogError(ex.Message);
             }
             finally
             {
@@ -923,6 +935,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -964,6 +977,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
             finally

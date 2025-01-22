@@ -46,7 +46,9 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
+                clsErrorLoggerDAL.EventLogError(ex.Message);
             }
             finally
             {
@@ -84,7 +86,8 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
-                
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+
             }
             finally
             {
@@ -126,6 +129,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
             finally
@@ -169,9 +173,10 @@ namespace DVLDataAccess
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-                
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+
             }
             finally 
             {
@@ -209,8 +214,9 @@ namespace DVLDataAccess
                 RowEffected = command.ExecuteNonQuery();
 
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -249,7 +255,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
-
+                clsErrorLoggerDAL.EventLogError(ex.Message);
             }
             finally
             {
@@ -292,6 +298,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -335,6 +342,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -378,6 +386,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -423,6 +432,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -466,6 +476,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -506,6 +517,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
             finally
@@ -543,6 +555,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
             finally
@@ -573,8 +586,9 @@ namespace DVLDataAccess
                 RowEffected = command.ExecuteNonQuery();
 
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
             finally
@@ -600,9 +614,10 @@ namespace DVLDataAccess
                 Registry.SetValue(KeyPath, vnusername, vdusername, RegistryValueKind.String);
                 Registry.SetValue(KeyPath, vnpassword, vdpassword , RegistryValueKind.String);
             }
-            catch 
+            catch (Exception ex)
             {
-                
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+
             }
         }
 
@@ -632,7 +647,10 @@ namespace DVLDataAccess
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+            }
 
         }
 
@@ -648,8 +666,9 @@ namespace DVLDataAccess
                 UserName = Registry.GetValue(KeyPath, vnusername, null) as string;
                 Password = Registry.GetValue(KeyPath, vnpassword, null) as string;
             }
-            catch 
+            catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
         }

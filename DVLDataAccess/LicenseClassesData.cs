@@ -32,7 +32,9 @@ namespace DVLDataAccess
 
             }
             catch (Exception ex)
-            { }
+            {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+            }
             finally 
             {
                 connection.Close();
@@ -68,7 +70,9 @@ namespace DVLDataAccess
 
             }
             catch (Exception ex)
-            { }
+            {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+            }
             finally
             {
                 connection.Close();
@@ -100,7 +104,9 @@ namespace DVLDataAccess
 
             }
             catch (Exception ex)
-            { }
+            {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+            }
             finally
             {
                 connection.Close();

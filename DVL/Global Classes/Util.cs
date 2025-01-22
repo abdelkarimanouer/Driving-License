@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DVLBusinessLayer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,7 +37,8 @@ namespace DVLD.Classes
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error creating folder: " + ex.Message);
+                    clsErrorLoggerBLL.EventLogError(ex.Message);
+
                     return false;
                 }
             }
@@ -72,7 +74,7 @@ namespace DVLD.Classes
             }
             catch (IOException iox)
             {
-                MessageBox.Show(iox.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsErrorLoggerBLL.EventLogError(iox.Message);
                 return false;
             }
 

@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,6 +47,7 @@
     <Compile Include="ConnectionSetting.cs" />
     <Compile Include="CountriesData.cs" />
     <Compile Include="DetainedLicenseData.cs" />
+    <Compile Include="ErrorLoggerDAL.cs" />
     <Compile Include="InfoDriverLicenseData.cs" />
     <Compile Include="DriversData.cs" />
     <Compile Include="InternationalLicenseData.cs" />

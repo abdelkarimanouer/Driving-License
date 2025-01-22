@@ -71,8 +71,9 @@ namespace DVLDataAccess
 
                 reader.Close();
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
             finally

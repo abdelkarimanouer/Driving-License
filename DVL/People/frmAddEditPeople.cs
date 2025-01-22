@@ -137,10 +137,9 @@ namespace DVL.People
                     {
                         File.Delete(_Person.ImagePath);
                     }
-                    catch (IOException)
+                    catch (IOException ex)
                     {
-                        // We could not delete the file.
-                        //log it later   
+                        clsErrorLoggerBLL.EventLogError(ex.Message);
                     }
                 }
 

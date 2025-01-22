@@ -40,6 +40,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
             finally
@@ -74,7 +75,7 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
-
+                clsErrorLoggerDAL.EventLogError(ex.Message);
             }
             finally 
             {
@@ -112,7 +113,8 @@ namespace DVLDataAccess
             }
             catch (Exception ex)
             {
-                
+                clsErrorLoggerDAL.EventLogError(ex.Message);
+
             }
             finally
             {
@@ -146,9 +148,9 @@ namespace DVLDataAccess
 
 
             }
-            catch
-            { 
-
+            catch (Exception ex)
+            {
+                clsErrorLoggerDAL.EventLogError(ex.Message);
             }
             finally
             {
