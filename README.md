@@ -11,7 +11,7 @@ To run the project, follow these steps:
    FROM DISK = 'C:\DVLD.bak'
    ```
 
-### 4- After restoring the database, open the `DVL.sln` file located in the `DVL` folder to run the application.
+### 4- After restoring the database, open the `DVL.exe` file located in the `\DVL\bin\Release` folder to run the application.
 
 # Note:
 Make sure SQL Server is running and you have permissions to restore databases.
