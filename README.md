@@ -14,4 +14,4 @@ To run the project, follow these steps:
 ### 4- After restoring the database, open the `DVL.exe` file located in the `\DVL\bin\Release` folder to run the application.
 
 # Note:
-Make sure SQL Server is running and you have permissions to restore databases.
+Make sure SQL Server is running and you have permissions to restore databases
