@@ -13,13 +13,6 @@ namespace DVL.People
 {
     public partial class frmManagePeople : Form
     {
-        private static DataTable _dtAllPeople = clsPeople.GetAllPeople();
-
-        //only select the columns that you want to show in the grid
-        private DataTable _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
-                                                         "FirstName", "SecondName", "ThirdName", "LastName",
-                                                         "GendorCaption", "DateOfBirth", "CountryName",
-                                                         "Phone", "Email");
 
         public frmManagePeople()
         {
@@ -28,11 +21,7 @@ namespace DVL.People
 
         private void RefrechPeople()
         {
-            _dtAllPeople = clsPeople.GetAllPeople();
-            dgvPeople.DataSource = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
-                                                         "FirstName", "SecondName", "ThirdName", "LastName",
-                                                         "GendorCaption", "DateOfBirth", "CountryName",
-                                                         "Phone", "Email");
+            dgvPeople.DataSource = clsPeople.GetAllPeople();
 
             lbRecords.Text = dgvPeople.Rows.Count.ToString();
             cbFilter.SelectedIndex = 0;
@@ -175,7 +164,7 @@ namespace DVL.People
             //Reset the filters in case nothing selected or filter value contains nothing.
             if (txtFilter.Text.Trim() == "" || FilterColumn == "None")
             {
-                _dtPeople.DefaultView.RowFilter = "";
+                dgvPeople.DataSource = clsPeople.GetAllPeople();
                 lbRecords.Text = dgvPeople.Rows.Count.ToString();
                 return;
             }
@@ -184,9 +173,7 @@ namespace DVL.People
             if (FilterColumn == "PersonID")
                 //in this case we deal with integer not string.
 
-                _dtPeople.DefaultView.RowFilter = string.Format("[{0}] = {1}", FilterColumn, txtFilter.Text.Trim());
-            else
-                _dtPeople.DefaultView.RowFilter = string.Format("[{0}] LIKE '{1}%'", FilterColumn, txtFilter.Text.Trim());
+                dgvPeople.DataSource = clsPeople.FilterByPersonID(int.Parse(txtFilter.Text.Trim()));
 
             lbRecords.Text = dgvPeople.Rows.Count.ToString();
         }
