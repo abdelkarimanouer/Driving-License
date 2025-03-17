@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -15,42 +16,43 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = "Select * from Applications Where ApplicationID = @ApplicationID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
+                    connection.Open();
 
-                    ApplicantPersonID = (int)reader["ApplicantPersonID"];
-                    ApplicationDate = (DateTime)reader["ApplicationDate"];
-                    ApplicationTypeID = (int)reader["ApplicationTypeID"];
-                    ApplicationStatus = (byte)reader["ApplicationStatus"];
-                    LastStatusDate = (DateTime)reader["LastStatusDate"];
-                    PaidFees = (decimal)reader["PaidFees"];
-                    CreatedByUserID = (int)reader["CreatedByUserID"];
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationInfoByApplicationID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Found = true;
+
+                                ApplicantPersonID = (int)reader["ApplicantPersonID"];
+                                ApplicationDate = (DateTime)reader["ApplicationDate"];
+                                ApplicationTypeID = (int)reader["ApplicationTypeID"];
+                                ApplicationStatus = (byte)reader["ApplicationStatus"];
+                                LastStatusDate = (DateTime)reader["LastStatusDate"];
+                                PaidFees = (decimal)reader["PaidFees"];
+                                CreatedByUserID = (int)reader["CreatedByUserID"];
+                            }
+                        }
+                    }
                 }
-                reader.Close();
+
             }
             catch(Exception ex)
             {
-                clsErrorLoggerDAL.EventLogError(ex.Message);
+                clsErrorLoggerDAL.EventLogError(ex.ToString());
                 Found = false;
             }
-            finally
-            {
-                connection.Close();
-            }
+
 
             return Found;
         }
@@ -58,44 +60,51 @@ namespace DVLDataAccess
         public static int AddNewApplication(int PersonID, DateTime ApplicationDate, int ApplicationTypeID, byte ApplicationStatus,
                                                 DateTime LastStatusDate, decimal PaidFees, int CreatedByUserID)
         {
-            int LastID = 0;
-
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"INSERT INTO Applications
-                             VALUES
-	                               (@ApplicantPersonID, @ApplicationDate, @ApplicationTypeID, @ApplicationStatus,
-                                         @LastStatusDate, @PaidFees, @CreatedByUserID);
-                             select SCOPE_IDENTITY();";
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
-            command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
-            command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
-            command.Parameters.AddWithValue("@LastStatusDate", LastStatusDate);
-            command.Parameters.AddWithValue("@PaidFees", PaidFees);
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+            int LastID = -1;
 
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    LastID = Convert.ToInt32( Result );
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_AddNewApplication", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
+                        command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
+                        command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+                        command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
+                        command.Parameters.AddWithValue("@LastStatusDate", LastStatusDate);
+                        command.Parameters.AddWithValue("@PaidFees", PaidFees);
+                        command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+
+                        SqlParameter outputParam = new SqlParameter("@NewApplicationID", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(outputParam);
+
+                        command.ExecuteNonQuery();
+
+                        if (outputParam.Value != DBNull.Value)
+                        {
+                            LastID = Convert.ToInt32(outputParam.Value);
+                        }
+                        else
+                        {
+                            LastID = -1;
+                        }
+
+                    }
                 }
 
             }
             catch (Exception ex)
             {
-                clsErrorLoggerDAL.EventLogError(ex.Message);
+                clsErrorLoggerDAL.EventLogError(ex.ToString());
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return LastID;
 
@@ -166,7 +175,6 @@ namespace DVLDataAccess
 
             return (RowEffected > 0);
         }
-
 
         public static bool DeleteApplication(int ApplicationID)
         {
