@@ -4,6 +4,10 @@
   "Documents": [
     {
       "AbsoluteMoniker": "D:0:0:{13A5C16A-90F6-4132-8985-0080CFE084C4}|..\\DVLDataAccess\\DVLDataAccess.csproj|d:\\programmer\\fullprojects\\dvldataaccess\\applicationsdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3A440AF7-331D-469D-93D2-E495791831B0}|DVL.csproj|d:\\programmer\\fullprojects\\dvl\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3A440AF7-331D-469D-93D2-E495791831B0}|DVL.csproj|solutionrelative:main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,8 +17,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Main.cs [Design]",
+              "DocumentMoniker": "D:\\Programmer\\FullProjects\\DVL\\Main.cs",
+              "RelativeDocumentMoniker": "Main.cs",
+              "ToolTip": "D:\\Programmer\\FullProjects\\DVL\\Main.cs [Design]",
+              "RelativeToolTip": "Main.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T19:51:25.04Z",
+              "EditorCaption": " [Design]"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -23,7 +39,7 @@
               "RelativeDocumentMoniker": "..\\DVLDataAccess\\ApplicationsData.cs",
               "ToolTip": "D:\\Programmer\\FullProjects\\DVLDataAccess\\ApplicationsData.cs",
               "RelativeToolTip": "..\\DVLDataAccess\\ApplicationsData.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAI8AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-17T20:58:35.885Z",
               "EditorCaption": ""

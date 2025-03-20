@@ -185,7 +185,7 @@
             this.toolStripMenuItem5,
             this.showPersonLicenseToolStripMenuItem});
             this.cmsLocalDLApp.Name = "cmsPeople";
-            this.cmsLocalDLApp.Size = new System.Drawing.Size(382, 372);
+            this.cmsLocalDLApp.Size = new System.Drawing.Size(382, 344);
             this.cmsLocalDLApp.Opening += new System.ComponentModel.CancelEventHandler(this.cmsLocalDLApp_Opening);
             // 
             // showApplicationDetailsToolStripMenuItem
@@ -435,7 +435,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.DataGridView dgvLocalDrivingLicense;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnX;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbStatus;
@@ -457,5 +456,6 @@
         private System.Windows.Forms.ToolStripMenuItem scheduleVisionTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scheduleWrittenTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scheduleStreetTestToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
