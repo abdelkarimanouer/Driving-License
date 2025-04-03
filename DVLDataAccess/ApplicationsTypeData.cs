@@ -14,38 +14,34 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"Select * from ApplicationTypes
-                             WHERE ApplicationTypeID = @ApplicationTypeID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
-
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
-                    ApplicationTypeTitle = (string)reader["ApplicationTypeTitle"];
-                    ApplicationFees = (decimal)reader["ApplicationFees"];
-                }
+                    connection.Open();
 
-                reader.Close();
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationType", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Found = true;
+                                ApplicationTypeTitle = (string)reader["ApplicationTypeTitle"];
+                                ApplicationFees = (decimal)reader["ApplicationFees"];
+                            }
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Found;
@@ -55,31 +51,31 @@ namespace DVLDataAccess
         {
             DataTable dtApplicationsTypes = new DataTable();
 
-            SqlConnection connection = new SqlConnection( clsConnectionSetting.connectionstring );
-            string query = "select * from ApplicationTypes";
-
-            SqlCommand command = new SqlCommand( query, connection );
-
             try
             {
-                connection.Open(); 
-                
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtApplicationsTypes.Load( reader );
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_ListsApplicationsTypes", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtApplicationsTypes.Load(reader);
+                            }
+                        }
+                    }
                 }
 
-                reader.Close();
+
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
-            }
-            finally 
-            {
-                connection.Close();
             }
 
             return dtApplicationsTypes;
@@ -89,36 +85,28 @@ namespace DVLDataAccess
         {
             int RowEffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"UPDATE ApplicationTypes
-                               SET 
-                                  ApplicationTypeTitle = @ApplicationTypeTitle
-                                 ,ApplicationFees = @ApplicationFees
-                             WHERE ApplicationTypeID = @ApplicationTypeID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
-            command.Parameters.AddWithValue("@ApplicationTypeTitle", ApplicationTypeTitle);
-            command.Parameters.AddWithValue("@ApplicationFees", ApplicationFees);
-
-
             try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
 
-                RowEffected = command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand("SP_UpdateApplicationType", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
 
+                        command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+                        command.Parameters.AddWithValue("@ApplicationTypeTitle", ApplicationTypeTitle);
+                        command.Parameters.AddWithValue("@ApplicationFees", ApplicationFees);
 
+                        RowEffected = command.ExecuteNonQuery();
+                    }
+                }
             }
             catch (Exception ex)
             {
-                clsErrorLoggerDAL.EventLogError(ex.Message);
+                clsErrorLoggerDAL.EventLogError(ex.ToString() );
 
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return (RowEffected > 0);
@@ -128,34 +116,34 @@ namespace DVLDataAccess
         {
             decimal Fees = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @" select ApplicationFees from ApplicationTypes
-                              where ApplicationTypeID = @ApplicationTypeID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
-
             try
             {
-                connection.Open();
-
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Fees = Convert.ToDecimal(Result);
-                }
+                    connection.Open();
 
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationFee", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null)
+                        {
+                            Fees = Convert.ToDecimal(Result);
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally
-            {
-                connection.Close();
-            }
+
+
             return Fees;
         }
 

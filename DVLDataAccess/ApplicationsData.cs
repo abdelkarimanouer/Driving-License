@@ -113,32 +113,26 @@ namespace DVLDataAccess
         public static bool CancelApplication(int ApplicationID)
         {
             int RowEffected = 0;
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"update Applications
-                                 set ApplicationStatus = 2 
-                                 where ApplicationID = @ApplicationID";
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
-
             try
             {
-                connection.Open();
-                RowEffected = command.ExecuteNonQuery();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_CancelApplication", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+
+                        RowEffected = command.ExecuteNonQuery();
+                    }
+                }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally
-            {
-                connection.Close();
-            }
-
-
 
             return (RowEffected > 0);
         }
@@ -146,31 +140,26 @@ namespace DVLDataAccess
         public static bool CompleteTestsApplication(int ApplicationID)
         {
             int RowEffected = 0;
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"update Applications
-                                 set ApplicationStatus = 3
-                                 where ApplicationID = @ApplicationID";
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
 
             try
             {
-                connection.Open();
-                RowEffected = command.ExecuteNonQuery();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
 
+                    using (SqlCommand command = new SqlCommand("SP_CompleteTestsApplication", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+
+                        RowEffected = command.ExecuteNonQuery();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
 
             return (RowEffected > 0);
@@ -180,26 +169,24 @@ namespace DVLDataAccess
         {
             int RowEffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = "delete from Applications    where ApplicationID = @ApplicationID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
             try
             {
-                connection.Open();
-                RowEffected = command.ExecuteNonQuery();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_DeleteApplication", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+
+                        RowEffected = command.ExecuteNonQuery();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
             }
 
 
