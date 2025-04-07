@@ -14,36 +14,33 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"SELECT CountryName from Countries
-                              Where CountryID = @ID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@ID", CountryID);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read() )
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
-                    CountryName = (string)reader["CountryName"];
-                }
+                    connection.Open();
 
-                reader.Close();
+                    using (SqlCommand command = new SqlCommand("SP_GetCountry", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ID", CountryID);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Found = true;
+                                CountryName = (string)reader["CountryName"];
+                            }
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
             {
-                clsErrorLoggerDAL.EventLogError(ex.Message);
+                clsErrorLoggerDAL.EventLogError(ex.ToString());
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Found;
@@ -53,24 +50,25 @@ namespace DVLDataAccess
         {
             DataTable dtCountries = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"SELECT CountryName from Countries";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-
-                while (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtCountries.Load(reader);
-                }
+                    connection.Open();
 
-                reader.Close();
+                    using (SqlCommand command = new SqlCommand("SP_GetAllCountries", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows)
+                            {
+                                dtCountries.Load(reader);
+                            }
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
@@ -78,13 +76,6 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
-
-
 
             return dtCountries;
         }
