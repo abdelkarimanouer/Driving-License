@@ -78,7 +78,7 @@ namespace DVLBusinessLayer
 
         public static DataTable ListsInternationalLicensesByPersonID(int ApplicantPersonID)
         {
-            return clsInternationalLicenseData.ListsInternationalLicensesByPersonID(ApplicantPersonID);
+            return clsInternationalLicenseData.GetListsInternationalLicensesByPersonID(ApplicantPersonID);
         }
         public clsInternationalLicense() 
         {

@@ -17,38 +17,36 @@ namespace DVLDataAccess
         {
             int DriverID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"INSERT INTO Drivers
-                                    (PersonID, CreatedByUserID, CreatedDate)
-                              VALUES
-                                    (@PersonID, @CreatedByUserID, @CreatedDate )
-                             select SCOPE_IDENTITY();";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@PersonID", PersonID);
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
-            command.Parameters.AddWithValue("@CreatedDate", CreatedDate);
-
             try
             {
-                connection.Open();
 
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    DriverID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_AddNewDriver", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add("@PersonID", SqlDbType.Int).Value = PersonID;
+                        command.Parameters.Add("@CreatedByUserID", SqlDbType.Int).Value = CreatedByUserID;
+                        command.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
+
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            DriverID = Convert.ToInt32(Result);
+                        }
+
+                    }
                 }
-
-
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally { connection.Close(); }
-
 
             return DriverID;
         }
@@ -57,41 +55,32 @@ namespace DVLDataAccess
         {
             DataTable dtDrivers = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @" WITH DistinctDrivers AS (  SELECT  Drivers.DriverID, Drivers.PersonID, People.NationalNo, FullName = People.FirstName + ' ' + isnull( People.SecondName, '') + ' ' + isnull( People.ThirdName, '') + ' ' + People.LastName, 
-                                  Drivers.CreatedDate as Date, Licenses.IsActive as ActiveLicenses,
-                              ROW_NUMBER() OVER(PARTITION BY Drivers.PersonID ORDER BY Drivers.CreatedDate ASC) AS RowNum
-                               FROM     Drivers 
-                                   INNER JOIN People ON Drivers.PersonID = People.PersonID 
-                                   INNER JOIN Licenses ON Drivers.DriverID = Licenses.DriverID
-                               WHERE 
-                                   Licenses.IsActive = 1
-                           )
-                           SELECT  DriverID,  PersonID, NationalNo, FullName, Date, ActiveLicenses
-                           FROM   DistinctDrivers
-                           WHERE  RowNum = 1;";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
             try
             {
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtDrivers.Load(reader);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_ListDrivers", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtDrivers.Load(reader);
+                            }
+                        }
+                    }
                 }
-                reader.Close();
+
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            { connection.Close(); }
 
             return dtDrivers;
         }

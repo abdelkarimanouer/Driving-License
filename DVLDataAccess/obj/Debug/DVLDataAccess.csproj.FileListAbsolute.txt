@@ -28,3 +28,9 @@ D:\Programmer\FullProjects\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.Assembly
 D:\Programmer\FullProjects\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.CoreCompileInputs.cache
 D:\Programmer\FullProjects\DVLDataAccess\obj\Debug\DVLDataAccess.dll
 D:\Programmer\FullProjects\DVLDataAccess\obj\Debug\DVLDataAccess.pdb
+D:\Programmer\FullProjects\DVL Project\DVLDataAccess\bin\Debug\DVLDataAccess.dll
+D:\Programmer\FullProjects\DVL Project\DVLDataAccess\bin\Debug\DVLDataAccess.pdb
+D:\Programmer\FullProjects\DVL Project\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.AssemblyReference.cache
+D:\Programmer\FullProjects\DVL Project\DVLDataAccess\obj\Debug\DVLDataAccess.csproj.CoreCompileInputs.cache
+D:\Programmer\FullProjects\DVL Project\DVLDataAccess\obj\Debug\DVLDataAccess.dll
+D:\Programmer\FullProjects\DVL Project\DVLDataAccess\obj\Debug\DVLDataAccess.pdb

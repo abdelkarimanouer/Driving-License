@@ -15,63 +15,67 @@ namespace DVLDataAccess
         {
             DataTable dtInternational = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = "SELECT InternationalLicenseID, ApplicationID, DriverID, IssuedUsingLocalLicenseID as LocallicenseID, IssueDate, ExpirationDate, IsActive     FROM     InternationalLicenses";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows) 
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtInternational.Load(reader);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_ListsInternationalLicenses", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtInternational.Load(reader);
+                            }
+                        }
+                    }
                 }
-                reader.Close();
+
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally { connection.Close(); }
 
             return dtInternational;
 
 
         }
 
-        public static DataTable ListsInternationalLicensesByPersonID(int ApplicantPersonID)
+        public static DataTable GetListsInternationalLicensesByPersonID(int ApplicantPersonID)
         {
             DataTable dtInternational = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"SELECT InternationalLicenseID, ApplicationID, IssuedUsingLocalLicenseID as LocallicenseID, IssueDate, ExpirationDate, IsActive     FROM     InternationalLicenses
-                              where ApplicationID in (SELECT Applications.ApplicationID
-                                    FROM     Applications INNER JOIN
-                                             InternationalLicenses ON Applications.ApplicationID = InternationalLicenses.ApplicationID
-                                                      where ApplicantPersonID = @ApplicantPersonID)";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@ApplicantPersonID", ApplicantPersonID);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtInternational.Load(reader);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GetListsInternationalLicensesByPersonID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add("@ApplicantPersonID", SqlDbType.Int).Value = ApplicantPersonID;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtInternational.Load(reader);
+                            }
+                        }
+                    }
                 }
-                reader.Close();
+
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally { connection.Close(); }
 
             return dtInternational;
 
@@ -82,37 +86,39 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = "select * from InternationalLicenses      where InternationalLicenseID = @InternationalLicenseID";
-
-            SqlCommand command = new SqlCommand (query, connection);
-
-            command.Parameters.AddWithValue("@InternationalLicenseID", InternationalLicenseID);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
+                    connection.Open();
 
-                    ApplicationID = (int)reader["ApplicationID"];
-                    DriverID = (int)reader["DriverID"];
-                    IssuedUsingLocalLicenseID = (int)reader["IssuedUsingLocalLicenseID"];
-                    IssueDate = (DateTime)reader["IssueDate"];
-                    ExpirationDate = (DateTime)reader["ExpirationDate"];
-                    IsActive = (bool)reader["IsActive"];
-                    CreatedByUserID = (int)reader["CreatedByUserID"];
+                    using (SqlCommand command = new SqlCommand("SP_GetInternationalLicenseInfo", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add("@InternationalLicenseID", SqlDbType.Int).Value = InternationalLicenseID;
 
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Found = true;
+
+                                ApplicationID = (int)reader["ApplicationID"];
+                                DriverID = (int)reader["DriverID"];
+                                IssuedUsingLocalLicenseID = (int)reader["IssuedUsingLocalLicenseID"];
+                                IssueDate = (DateTime)reader["IssueDate"];
+                                ExpirationDate = (DateTime)reader["ExpirationDate"];
+                                IsActive = (bool)reader["IsActive"];
+                                CreatedByUserID = (int)reader["CreatedByUserID"];
+
+                            }
+                            else
+                            {
+                                Found = false;
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    Found = false;
-                }
-
-                reader.Close();
 
             }
             catch (Exception ex)
@@ -120,11 +126,6 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return Found;
         }
@@ -133,32 +134,30 @@ namespace DVLDataAccess
         {
             int ID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"INSERT INTO [dbo].[InternationalLicenses]
-                                   ( [ApplicationID], [DriverID], [IssuedUsingLocalLicenseID], [IssueDate], [ExpirationDate], [IsActive], [CreatedByUserID] )
-                             VALUES
-                                   ( @ApplicationID, @DriverID, @IssuedUsingLocalLicenseID,@IssueDate, @ExpirationDate, @IsActive, @CreatedByUserID )
-                             select SCOPE_IDENTITY();";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-            command.Parameters.AddWithValue("@DriverID", DriverID);
-            command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", IssuedUsingLocalLicenseID);
-            command.Parameters.AddWithValue("@IssueDate", IssueDate);
-            command.Parameters.AddWithValue("@ExpirationDate", ExpirationDate);
-            command.Parameters.AddWithValue("@IsActive", IsActive);
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
-
             try
             {
-                connection.Open();
-
-                object Result = command.ExecuteScalar();
-
-                if (Result != null) 
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    ID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_AddNewInternationalLicenseApp", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+                        command.Parameters.AddWithValue("@DriverID", DriverID);
+                        command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", IssuedUsingLocalLicenseID);
+                        command.Parameters.AddWithValue("@IssueDate", IssueDate);
+                        command.Parameters.AddWithValue("@ExpirationDate", ExpirationDate);
+                        command.Parameters.AddWithValue("@IsActive", IsActive);
+                        command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+
+                        object Result = command.ExecuteScalar();
+                        if (Result != null || Result != DBNull.Value)
+                        {
+                            ID = Convert.ToInt32(Result);
+                        }
+                    }
                 }
 
             }
@@ -167,11 +166,6 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return ID;
         }
@@ -180,22 +174,28 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select found = 1 from InternationalLicenses    where IssuedUsingLocalLicenseID = @IssuedUsingLocalLicenseID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", IssuedUsingLocalLicenseID);
-
             try
             {
-                connection.Open();
-
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_CheckifInternationalLicenseAlreadyExistByLicenseID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add("@IssuedUsingLocalLicenseID", SqlDbType.Int).Value = IssuedUsingLocalLicenseID;
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null || Result != DBNull.Value)
+                        {
+                            Found = true;
+                        }
+                        else
+                        {
+                            Found = false;
+                        }
+                    }
                 }
 
             }
@@ -203,11 +203,7 @@ namespace DVLDataAccess
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
-            }
+            } 
 
             return Found;
         }
@@ -216,22 +212,23 @@ namespace DVLDataAccess
         {
             int ApplicationID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @" select ApplicationID from InternationalLicenses    where InternationalLicenseID = @InternationalLicenseID";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@InternationalLicenseID", InternationalLicenseID);
-
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    ApplicationID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationIDByInternationalLicenseID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add("@InternationalLicenseID", SqlDbType.Int).Value = InternationalLicenseID;
+
+                        object Result = command.ExecuteScalar();
+                        if (Result != null || Result  != DBNull.Value)
+                        {
+                            ApplicationID = Convert.ToInt32(Result);
+                        }
+                    }
                 }
 
             }
@@ -240,11 +237,6 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return ApplicationID;
         }
@@ -253,55 +245,57 @@ namespace DVLDataAccess
         {
             int RowEffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"update InternationalLicenses   set IssuedUsingLocalLicenseID = @NewLicenseID
-                                where IssuedUsingLocalLicenseID = @OldLicenseID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@OldLicenseID", OldLicenseID);
-            command.Parameters.AddWithValue("@NewLicenseID", NewLicenseID);
-
             try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
 
-                RowEffected = command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand("SP_UpdateLocalLicenseID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add("@OldLicenseID", SqlDbType.Int).Value = OldLicenseID;
+                        command.Parameters.Add("@NewLicenseID", SqlDbType.Int).Value = NewLicenseID;
+
+                        RowEffected = command.ExecuteNonQuery();
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
+
 
             return (RowEffected > 0);
         }
-
 
         public static int GetApplicationIDByLocalLicenseID(int IssuedUsingLocalLicenseID)
         {
             int ApplicationID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @" select ApplicationID from InternationalLicenses    where IssuedUsingLocalLicenseID = @IssuedUsingLocalLicenseID";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", IssuedUsingLocalLicenseID);
-
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    ApplicationID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationIDByLocalLicenseID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add("@IssuedUsingLocalLicenseID", SqlDbType.Int).Value = IssuedUsingLocalLicenseID;
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null || Result != DBNull.Value)
+                        {
+                            ApplicationID = Convert.ToInt32(Result);
+                        }
+                    }
                 }
 
             }
@@ -310,11 +304,6 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return ApplicationID;
         }

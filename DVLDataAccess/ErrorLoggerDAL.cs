@@ -13,13 +13,13 @@ namespace DVLDataAccess
         {
             string sourceName = "DVL";
 
-            // Create the event source if it does not exist
+            // Create the event source if it does not exist.
             if (!EventLog.SourceExists(sourceName))
             {
                 EventLog.CreateEventSource(sourceName, "Application");
             }
 
-            // Log an information event
+            // Log an information event.
             EventLog.WriteEntry(sourceName, Error, EventLogEntryType.Error);
         }
     }

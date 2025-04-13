@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Programmer\\FullProjects\\DVL\\",
+  "WorkspaceRootPath": "D:\\Programmer\\FullProjects\\DVL Project\\DVL\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{13A5C16A-90F6-4132-8985-0080CFE084C4}|..\\DVLDataAccess\\DVLDataAccess.csproj|d:\\programmer\\fullprojects\\dvldataaccess\\detainedlicensedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{13A5C16A-90F6-4132-8985-0080CFE084C4}|..\\DVLDataAccess\\DVLDataAccess.csproj|d:\\programmer\\fullprojects\\dvl project\\dvldataaccess\\licenseclassesdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,14 +18,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DetainedLicenseData.cs",
-              "DocumentMoniker": "D:\\Programmer\\FullProjects\\DVLDataAccess\\DetainedLicenseData.cs",
-              "RelativeDocumentMoniker": "..\\DVLDataAccess\\DetainedLicenseData.cs",
-              "ToolTip": "D:\\Programmer\\FullProjects\\DVLDataAccess\\DetainedLicenseData.cs",
-              "RelativeToolTip": "..\\DVLDataAccess\\DetainedLicenseData.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAYwC4AAAAAAAAAAAAAAA==",
+              "Title": "LicenseClassesData.cs",
+              "DocumentMoniker": "D:\\Programmer\\FullProjects\\DVL Project\\DVLDataAccess\\LicenseClassesData.cs",
+              "RelativeDocumentMoniker": "..\\DVLDataAccess\\LicenseClassesData.cs",
+              "ToolTip": "D:\\Programmer\\FullProjects\\DVL Project\\DVLDataAccess\\LicenseClassesData.cs",
+              "RelativeToolTip": "..\\DVLDataAccess\\LicenseClassesData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHQAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-07T20:25:55.665Z",
+              "WhenOpened": "2025-04-13T21:19:48.242Z",
               "EditorCaption": ""
             }
           ]
