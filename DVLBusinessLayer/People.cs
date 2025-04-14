@@ -50,47 +50,47 @@ namespace DVLBusinessLayer
 
         public static DataTable FilterByPersonID(int PersonID)
         {
-            return clsPeopleData.FilterByPersonID(PersonID);
+            return clsPeopleData.FilterPersonsByPersonID(PersonID);
         }
 
         public static DataTable FilterByNationalNo(string NationalNo)
         {
-            return clsPeopleData.FilterByNationalNo(NationalNo);
+            return clsPeopleData.FilterPersonsByNationalNo(NationalNo);
         }
 
         public static DataTable FilterByFirstName(string FirstName)
         {
-            return clsPeopleData.FilterByFirstName(FirstName);
+            return clsPeopleData.FilterPersonsByFirstName(FirstName);
         }
 
         public static DataTable FilterBySecondName(string SecondName)
         {
-            return clsPeopleData.FilterBySecondName(SecondName);
+            return clsPeopleData.FilterPersonsBySecondName(SecondName);
         }
 
         public static DataTable FilterByThirdName(string ThirdName)
         {
-            return clsPeopleData.FilterByThirdName(ThirdName);
+            return clsPeopleData.FilterPersonsByThirdName(ThirdName);
         }
 
         public static DataTable FilterByLastName(string LastName)
         {
-            return clsPeopleData.FilterByLastName(LastName);
+            return clsPeopleData.FilterPersonsByLastName(LastName);
         }
 
         public static DataTable FilterByGendor(string Gendor)
         {
-            return clsPeopleData.FilterByGendor(Gendor);
+            return clsPeopleData.FilterPersonsByGendor(Gendor);
         }
 
         public static DataTable FilterByEmail(string Email)
         {
-            return clsPeopleData.FilterByEmail(Email);
+            return clsPeopleData.FilterPersonsByEmail(Email);
         }
 
         public static DataTable FilterByPhone(string Phone)
         {
-            return clsPeopleData.FilterByPhone(Phone);
+            return clsPeopleData.FilterPersonsByPhone(Phone);
         }
 
         public static clsPeople FindPeopleByPersonID(int ID)
