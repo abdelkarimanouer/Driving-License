@@ -27,11 +27,6 @@ namespace DVLBusinessLayer
         {
             return _AddNewTest();
         }
-
-        public static bool FailedOrNot(int TestAppointmentID)
-        {
-            return clsTestData.FaildOrNot(TestAppointmentID);
-        }
         
         public clsTests() 
         {

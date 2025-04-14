@@ -18,7 +18,6 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-
             try
             {
 
@@ -968,7 +967,7 @@ namespace DVLDataAccess
 
                 object Result = command.ExecuteScalar();
 
-                if (Result != null)
+                if (Result != null && Result != DBNull.Value)
                 {
                     Found = true ;
                 }

@@ -91,10 +91,10 @@ namespace DVL.Licenses
             {
                 license.ApplicationID = application.ApplicationID;
                 license.DriverID = driverLicense.DriverID;
-                license.LicenseClass = clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName);
+                license.LicenseClass = LicenseClasses.GetLicenseClassID(driverLicense.ClassName);
                 license.IssueDate = DateTime.Now;
 
-                if (clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 1 || clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 2)
+                if (LicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 1 || LicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 2)
                 {
                     license.ExpirationDate = DateTime.Now.AddYears(5);
                 }

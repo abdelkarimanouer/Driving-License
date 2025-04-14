@@ -34,9 +34,9 @@ namespace DVL.Licenses
             lbApplicationDate.Text = DateTime.Now.ToString("d");
             lbissueDate.Text = DateTime.Now.ToString("d");
             lbApplicationFees.Text = clsApplicationsTypes.GetApplicationFee(2).ToString();
-            lbLicenseFees.Text = clsLicenseClasses.ApplicationFees(driverLicense.ClassName).ToString();
+            lbLicenseFees.Text = LicenseClasses.ApplicationFees(driverLicense.ClassName).ToString();
 
-            if (clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 1 || clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 2)
+            if (LicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 1 || LicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 2)
             {
                 lbExpirationDate.Text = DateTime.Now.AddYears(5).ToString("d");
             }
@@ -101,10 +101,10 @@ namespace DVL.Licenses
             {
                 license.ApplicationID = application.ApplicationID;
                 license.DriverID = driverLicense.DriverID;
-                license.LicenseClass = clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName);
+                license.LicenseClass = LicenseClasses.GetLicenseClassID(driverLicense.ClassName);
                 license.IssueDate = DateTime.Now;
 
-                if (clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 1 || clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 2)
+                if (LicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 1 || LicenseClasses.GetLicenseClassID(driverLicense.ClassName) == 2)
                 {
                     license.ExpirationDate = DateTime.Now.AddYears(5);
                 }

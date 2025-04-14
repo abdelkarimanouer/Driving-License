@@ -153,7 +153,7 @@ namespace DVLDataAccess
                         command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
 
                         object Result = command.ExecuteScalar();
-                        if (Result != null || Result != DBNull.Value)
+                        if (Result != null && Result != DBNull.Value)
                         {
                             ID = Convert.ToInt32(Result);
                         }
@@ -187,7 +187,7 @@ namespace DVLDataAccess
 
                         object Result = command.ExecuteScalar();
 
-                        if (Result != null || Result != DBNull.Value)
+                        if (Result != null && Result != DBNull.Value)
                         {
                             Found = true;
                         }
@@ -291,7 +291,7 @@ namespace DVLDataAccess
 
                         object Result = command.ExecuteScalar();
 
-                        if (Result != null || Result != DBNull.Value)
+                        if (Result != null && Result != DBNull.Value)
                         {
                             ApplicationID = Convert.ToInt32(Result);
                         }

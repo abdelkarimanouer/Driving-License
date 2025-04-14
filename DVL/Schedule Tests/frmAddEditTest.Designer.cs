@@ -226,7 +226,7 @@
             this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpDate.Location = new System.Drawing.Point(246, 399);
             this.dtpDate.Name = "dtpDate";
-            this.dtpDate.Size = new System.Drawing.Size(199, 26);
+            this.dtpDate.Size = new System.Drawing.Size(252, 26);
             this.dtpDate.TabIndex = 36;
             // 
             // lbName

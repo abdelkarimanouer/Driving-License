@@ -130,7 +130,7 @@ namespace DVLDataAccess
 
                         object Result = command.ExecuteScalar();
 
-                        if (Result != null)
+                        if (Result != null && Result != DBNull.Value)
                         {
                             Fees = Convert.ToDecimal(Result);
                         }

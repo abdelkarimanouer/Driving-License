@@ -16,63 +16,53 @@ namespace DVLBusinessLayer
 
         public static bool GetLocalDLAppInfoFromView(int LocalDrivingLicenseApplicationID,ref string ClassName,ref byte PassedTestCount)
         {
-            return clsLocalDrivingLicenseAppData.GetLocalDLAppInfoFromView(LocalDrivingLicenseApplicationID,ref ClassName,ref PassedTestCount);
+            return LocalDrivingLicenseAppData.GetLocalDLAppInfoFromView(LocalDrivingLicenseApplicationID,ref ClassName,ref PassedTestCount);
         }
 
         public static string ClassNameByLDLAppID(int LocalDrivingLicenseApplicationID)
         {
-            return clsLocalDrivingLicenseAppData.ClassNameByLDLAppID(LocalDrivingLicenseApplicationID); ;
+            return LocalDrivingLicenseAppData.ClassNameByLDLAppID(LocalDrivingLicenseApplicationID); ;
         }
 
         public static int LicenseClassIDByLDLAppID(int LocalDrivingLicenseApplicationID)
         {
-            return clsLocalDrivingLicenseAppData.LicenseClassIDByLDLAppID(LocalDrivingLicenseApplicationID); ;
+            return LocalDrivingLicenseAppData.LicenseClassIDByLDLAppID(LocalDrivingLicenseApplicationID); ;
         }
 
         public static bool CheckIfStatusIsCompleted(int LocalDrivingLicenseApplicationID)
         {
-            return clsLocalDrivingLicenseAppData.CheckIfStatusIsCompleted(LocalDrivingLicenseApplicationID);
+            return LocalDrivingLicenseAppData.CheckIfStatusIsCompleted(LocalDrivingLicenseApplicationID);
         }
 
         public static DataTable ListsLocalDrivingLicenseApps()
         {
-            return clsLocalDrivingLicenseAppData.ListsLocalDrivingLicenseApps();
+            return LocalDrivingLicenseAppData.ListsLocalDrivingLicenseApps();
         }
 
         public static DataTable FilterByNationalNo(string NationalNo)
         {
-            return clsLocalDrivingLicenseAppData.FilterByNationalNoLists(NationalNo);
-        }
-
-        public static DataTable FilterByLDLAppID(int LocalDrivingLicenseApplicationID)
-        {
-            return clsLocalDrivingLicenseAppData.FilterByLDLAppID(LocalDrivingLicenseApplicationID);
+            return LocalDrivingLicenseAppData.FilterByNationalNoLists(NationalNo);
         }
 
         public static bool IsThereAnActiveScheduledTest(int LocalDrivingLicenseApplicationID, int TestTypeID)
 
         {
-            return clsLocalDrivingLicenseAppData.IsThereAnActiveScheduledTest(LocalDrivingLicenseApplicationID, TestTypeID);
+            return LocalDrivingLicenseAppData.IsThereAnActiveScheduledTest(LocalDrivingLicenseApplicationID, TestTypeID);
         }
 
         public static DataTable FilterByFullName(string FullName)
         {
-            return clsLocalDrivingLicenseAppData.FilterByFullName(FullName);
-        }
-
-        public static DataTable FilterByStatus(string Status)
-        {
-            return clsLocalDrivingLicenseAppData.FilterByStatus(Status);
+            return LocalDrivingLicenseAppData.FilterByFullName(FullName);
         }
 
         public static int CountRecords()
         {
-            return clsLocalDrivingLicenseAppData.ListsLocalDrivingLicenseApps().Rows.Count;
+            return LocalDrivingLicenseAppData.ListsLocalDrivingLicenseApps().Rows.Count;
         }
 
         private bool _AddNewLocalDrivingLicenseClass()
         {
-            LDLApplicationID = clsLocalDrivingLicenseAppData.AddNewLocalDrivingLicenseApp(this.ApplicationID, this.LicenseClassID);
+            LDLApplicationID = LocalDrivingLicenseAppData.AddNewLocalDrivingLicenseApp(this.ApplicationID, this.LicenseClassID);
             return (LDLApplicationID != -1);
         }
 
@@ -83,32 +73,32 @@ namespace DVLBusinessLayer
 
         public static bool CheckIfPersonHasTheSameApp(string NationalNo, string ClassName)
         {
-            return clsLocalDrivingLicenseAppData.CheckIfPersonHasTheSameApp(NationalNo, ClassName);
+            return LocalDrivingLicenseAppData.CheckIfPersonHasTheSameApp(NationalNo, ClassName);
         }
 
         public static int GetApplicationIDFromLocalDLAppTable(int LocalDrivingLicenseApplicationID)
         {
-            return clsLocalDrivingLicenseAppData.GetApplicationIDFromLocalDLAppTable(LocalDrivingLicenseApplicationID);
+            return LocalDrivingLicenseAppData.GetApplicationIDFromLocalDLAppTable(LocalDrivingLicenseApplicationID);
         }
 
         public static bool CheckIfPersonCancelledApp(string NationalNo, string ClassName)
         {
-            return clsLocalDrivingLicenseAppData.CheckIfPersonCancelledApp(NationalNo, ClassName) ;
+            return LocalDrivingLicenseAppData.CheckIfPersonCancelledApp(NationalNo, ClassName) ;
         }
 
         public static bool CheckIfStatusNew(string NationalNo, string ClassName)
         {
-            return clsLocalDrivingLicenseAppData.CheckIfStatusNew(NationalNo, ClassName) ;
+            return LocalDrivingLicenseAppData.CheckIfStatusNew(NationalNo, ClassName) ;
         }
 
         public static bool DeleteLocalDLApplication(int LocalDrivingLicenseApplicationID)
         {
-            return clsLocalDrivingLicenseAppData.DeleteLocalDLApplication(LocalDrivingLicenseApplicationID );
+            return LocalDrivingLicenseAppData.DeleteLocalDLApplication(LocalDrivingLicenseApplicationID );
         }
 
         public static int PassedTestCount(int LocalDrivingLicenseApplicationID)
         {
-            return clsLocalDrivingLicenseAppData.PassedTestCount(LocalDrivingLicenseApplicationID);
+            return LocalDrivingLicenseAppData.PassedTestCount(LocalDrivingLicenseApplicationID);
         }
 
         public clsLocalDrivingLicenseApp()

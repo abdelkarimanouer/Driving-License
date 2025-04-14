@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DVLBusinessLayer
 {
-    public class clsLicenseClasses
+    public class LicenseClasses
     {
         public static DataTable ListsOfLicenseClasses()
         {
@@ -17,12 +17,12 @@ namespace DVLBusinessLayer
 
         public static decimal ApplicationFees(string ClassName)
         {
-            return clsLicenseClassesData.ApplicationFees(ClassName);
+            return clsLicenseClassesData.GetApplicationFeesByClassName(ClassName);
         }
 
         public static int GetLicenseClassID(string ClassName)
         {
-            return clsLicenseClassesData.GetLicenseClassID(ClassName);
+            return clsLicenseClassesData.GetLicenseClassIDByClassName(ClassName);
         }
     }
 }

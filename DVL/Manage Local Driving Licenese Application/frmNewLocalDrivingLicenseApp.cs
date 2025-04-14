@@ -23,7 +23,7 @@ namespace DVL.New_Driving_Licenese_Application
 
         private void FillCbLicenseClass()
         {
-            DataTable dtLicenseClasses = clsLicenseClasses.ListsOfLicenseClasses();
+            DataTable dtLicenseClasses = LicenseClasses.ListsOfLicenseClasses();
 
             foreach (DataRow row in dtLicenseClasses.Rows)
             {
@@ -115,7 +115,7 @@ namespace DVL.New_Driving_Licenese_Application
             if (application.Save())
             {
                 localDrivingLicenseApp.ApplicationID = application.ApplicationID;
-                localDrivingLicenseApp.LicenseClassID = clsLicenseClasses.GetLicenseClassID(cbLicenseClass.Text); 
+                localDrivingLicenseApp.LicenseClassID = LicenseClasses.GetLicenseClassID(cbLicenseClass.Text); 
 
                 if (localDrivingLicenseApp.Save())
                 {

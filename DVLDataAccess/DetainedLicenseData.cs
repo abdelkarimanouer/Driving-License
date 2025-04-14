@@ -24,7 +24,7 @@ namespace DVLDataAccess
 
                         object Result = command.ExecuteScalar();
 
-                        if (Result != null)
+                        if (Result != null && Result != DBNull.Value)
                         {
                             IsDetained = true;
                         }
@@ -92,7 +92,7 @@ namespace DVLDataAccess
 
                         object Result = command.ExecuteScalar();
 
-                        if (Result != null)
+                        if (Result != null && Result != DBNull.Value)
                         {
                             DetainID = Convert.ToInt32(Result);
                         }

@@ -83,10 +83,8 @@
             this.cbFilter.FormattingEnabled = true;
             this.cbFilter.Items.AddRange(new object[] {
             "None",
-            "L.D.L.AppID",
             "NationalNo",
-            "FullName",
-            "Status"});
+            "FullName"});
             this.cbFilter.Location = new System.Drawing.Point(113, 267);
             this.cbFilter.Name = "cbFilter";
             this.cbFilter.Size = new System.Drawing.Size(151, 29);

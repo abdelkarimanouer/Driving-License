@@ -15,44 +15,45 @@ namespace DVLDataAccess
         {
             int LicenseID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"INSERT INTO [dbo].[Licenses]
-                                        ([ApplicationID], [DriverID], [LicenseClass], [IssueDate], [ExpirationDate], [Notes], [PaidFees], [IsActive], [IssueReason], [CreatedByUserID])
-                                  VALUES
-                                        (@ApplicationID, @DriverID, @LicenseClass, @IssueDate, @ExpirationDate, @Notes, @PaidFees, @IsActive, @IssueReason, @CreatedByUserID)
-                             select SCOPE_IDENTITY(); ";
-
-            SqlCommand command = new SqlCommand (query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-            command.Parameters.AddWithValue("@DriverID", DriverID);
-            command.Parameters.AddWithValue("@LicenseClass", LicenseClass);
-            command.Parameters.AddWithValue("@IssueDate", IssueDate);
-            command.Parameters.AddWithValue("@ExpirationDate", ExpirationDate);
-
-            if (Notes == "")
-            {
-                command.Parameters.AddWithValue("@Notes", DBNull.Value);
-            }
-            else
-            {
-                command.Parameters.AddWithValue("@Notes", Notes);
-            }
-
-            command.Parameters.AddWithValue("@PaidFees", PaidFees);
-            command.Parameters.AddWithValue("@IsActive", IsActive);
-            command.Parameters.AddWithValue("@IssueReason", IssueReason);
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
-
             try
             {
-                connection.Open ();
 
-                object Result = command.ExecuteScalar();
-
-                if (Result != null) 
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    LicenseID = Convert.ToInt32( Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_AddNewLicense", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+                        command.Parameters.AddWithValue("@DriverID", DriverID);
+                        command.Parameters.AddWithValue("@LicenseClass", LicenseClass);
+                        command.Parameters.AddWithValue("@IssueDate", IssueDate);
+                        command.Parameters.AddWithValue("@ExpirationDate", ExpirationDate);
+
+                        if (Notes == "")
+                        {
+                            command.Parameters.AddWithValue("@Notes", DBNull.Value);
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue("@Notes", Notes);
+                        }
+
+                        command.Parameters.AddWithValue("@PaidFees", PaidFees);
+                        command.Parameters.AddWithValue("@IsActive", IsActive);
+                        command.Parameters.AddWithValue("@IssueReason", IssueReason);
+                        command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            LicenseID = Convert.ToInt32(Result);
+                        }
+                    }
                 }
 
             }
@@ -60,9 +61,6 @@ namespace DVLDataAccess
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally { connection.Close(); }
-
-
 
             return LicenseID;
         }
@@ -71,34 +69,36 @@ namespace DVLDataAccess
         {
             DataTable dtLicensehistory = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select LicenseID,ApplicationID, LicenseClass, IssueDate, ExpirationDate, IsActive from Licenses 
-                                 where LicenseID in (select LicenseID from Licenses
-                                        where ApplicationID in (select ApplicationID from Applications
-                                               where ApplicantPersonID = @ApplicantPersonID))";
-
-            SqlCommand command = new SqlCommand (query, connection);
-            command.Parameters.AddWithValue("@ApplicantPersonID", ApplicantPersonID);
-
             try
             {
-                connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
 
-                if (reader.HasRows)
-                { 
-                    dtLicensehistory.Load(reader);
+                    using (SqlCommand command = new SqlCommand("SP_GetLocalLicenseHistoryByPersonID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicantPersonID", ApplicantPersonID);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtLicensehistory.Load(reader);
+                            }
+
+                        }
+                    }
                 }
-                reader.Close();
+
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            { connection.Close(); }
 
             return dtLicensehistory;
         }
@@ -107,21 +107,26 @@ namespace DVLDataAccess
         {
             int ApplicationID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select ApplicationID from Licenses   where LicenseID = @LicenseID";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@LicenseID", LicenseID);
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    ApplicationID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationIDFromLicenses", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LicenseID", LicenseID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            ApplicationID = Convert.ToInt32(Result);
+                        }
+
+                    }
                 }
 
             }
@@ -130,11 +135,6 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return ApplicationID;
         }
@@ -143,31 +143,33 @@ namespace DVLDataAccess
         {
             int LicenseID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select LicenseID from Licenses    where ApplicationID = @ApplicationID";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
 
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    LicenseID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GetLicenseIDByAppID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            LicenseID = Convert.ToInt32(Result);
+                        }
+
+                    }
                 }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
             }
 
 
@@ -178,27 +180,27 @@ namespace DVLDataAccess
         {
             int RowEffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"update Licenses  set IsActive = 0  where LicenseID = @LicenseID";
-            
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@LicenseID", LicenseID);
-
             try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
 
-                RowEffected = command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand("SP_DisableLicense", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LicenseID", LicenseID);
+
+                        RowEffected = command.ExecuteNonQuery();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally
-            {
-                connection.Close() ;
-            }
+
 
             return (RowEffected > 0);
         }

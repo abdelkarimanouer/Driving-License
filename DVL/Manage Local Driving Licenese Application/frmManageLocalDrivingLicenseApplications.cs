@@ -78,13 +78,6 @@ namespace DVL.Manage_Local_Driving_Licenese_Application
                 return;
             }
 
-            if (cbFilter.Text == "L.D.L.AppID")
-            {
-                dgvLocalDrivingLicense.DataSource = clsLocalDrivingLicenseApp.FilterByLDLAppID( Convert.ToInt32(txtFilter.Text) );
-                dgvLocalDrivingLicense.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                return;
-            }
-
 
         }
 
@@ -113,13 +106,6 @@ namespace DVL.Manage_Local_Driving_Licenese_Application
             if (cbStatus.SelectedIndex == 0)
             {
                 dgvLocalDrivingLicense.DataSource = clsLocalDrivingLicenseApp.ListsLocalDrivingLicenseApps();
-                dgvLocalDrivingLicense.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                return;
-            }
-
-            if (cbFilter.Text == "Status")
-            {
-                dgvLocalDrivingLicense.DataSource = clsLocalDrivingLicenseApp.FilterByStatus(cbStatus.Text);
                 dgvLocalDrivingLicense.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 return;
             }

@@ -60,7 +60,7 @@ namespace DVL.Manage_Interantional_License_App
 
         private void btnIssue_Click(object sender, EventArgs e)
         {
-            if (clsLicenseClasses.GetLicenseClassID(driverLicense.ClassName) != 3)
+            if (LicenseClasses.GetLicenseClassID(driverLicense.ClassName) != 3)
             {
                 MessageBox.Show("Class Name of this card does not meet the conditions ", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                 return;

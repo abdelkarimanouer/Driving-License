@@ -14,103 +14,101 @@ namespace DVLDataAccess
         {
             DataTable dtLicenseClasses = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = "select * from LicenseClasses";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtLicenseClasses.Load(reader);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_listOfLicenseClasses", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtLicenseClasses.Load(reader);
+                            }
+                        }
+                    }
                 }
-                reader.Close();
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally 
-            {
-                connection.Close();
-            }
-
-
 
             return dtLicenseClasses;
         }
 
-        public static decimal ApplicationFees(string ClassName)
+        public static decimal GetApplicationFeesByClassName(string ClassName)
         {
             decimal Fees = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @" select ClassFees from LicenseClasses
-                              where ClassName = @ClassName";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@ClassName", ClassName);
-
             try
             {
-                connection.Open();
-
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Fees = Convert.ToDecimal(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationFeesByClassName", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add("@ClassName", SqlDbType.NVarChar).Value = ClassName;
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            Fees = Convert.ToDecimal(Result);
+                        }
+                    }
                 }
-                
+
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally
-            {
-                connection.Close();
-            }
+
             return Fees;
         }
 
-        public static int GetLicenseClassID(string ClassName)
+        public static int GetLicenseClassIDByClassName(string ClassName)
         {
             int LicenseClassID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select LicenseClassID from LicenseClasses where ClassName = @ClassName";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@ClassName", ClassName);
-
             try
             {
-                connection.Open();
-
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    LicenseClassID = Convert.ToInt32(Result);
-                }
+                    connection.Open();
 
+                    using (SqlCommand command = new SqlCommand("SP_GetLicenseClassIDByClassName", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add("@ClassName", SqlDbType.NVarChar).Value = ClassName;
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            LicenseClassID = Convert.ToInt32(Result);
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
             }
-            finally
-            {
-                connection.Close();
-            }
+
             return LicenseClassID;
         }
 

@@ -111,7 +111,7 @@ namespace DVL.Schedule_Tests
             lbID.Text = _LocalDLAppID.ToString();
             lbDClass.Text = clsLocalDrivingLicenseApp.ClassNameByLDLAppID(_LocalDLAppID);
             lbName.Text = clsPeople.FindPeopleByPersonID(applications.PersonID).FullName();
-            lbFees.Text = clsLicenseClasses.ApplicationFees(lbDClass.Text).ToString();
+            lbFees.Text = LicenseClasses.ApplicationFees(lbDClass.Text).ToString();
 
             lbTotalFees.Text = (Convert.ToDecimal(lbFees.Text) + Convert.ToDecimal(lbRAppFees.Text)).ToString();
 

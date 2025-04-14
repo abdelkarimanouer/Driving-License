@@ -14,39 +14,36 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"Select * from TestTypes
-                             WHERE TestTypeID = @TestTypeID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
-
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
-                    TestTypeTitle = (string)reader["TestTypeTitle"];
-                    TestTypeDescription = (string)reader["TestTypeDescription"];
-                    TestTypeFees = (decimal)reader["TestTypeFees"];
-                }
+                    connection.Open();
 
-                reader.Close();
+                    using (SqlCommand command = new SqlCommand("SP_GetTestType", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Found = true;
+                                TestTypeTitle = (string)reader["TestTypeTitle"];
+                                TestTypeDescription = (string)reader["TestTypeDescription"];
+                                TestTypeFees = (decimal)reader["TestTypeFees"];
+                            }
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Found;
@@ -56,33 +53,31 @@ namespace DVLDataAccess
         {
             DataTable dtTestTypes = new DataTable();
 
-
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = "select * from TestTypes";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
             try
             {
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtTestTypes.Load(reader);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_ListsTestTypes", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.HasRows)
+                            {
+                                dtTestTypes.Load(reader);
+                            }
+                        }
+                    }
                 }
 
-                reader.Close();
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return dtTestTypes;
@@ -92,28 +87,26 @@ namespace DVLDataAccess
         {
             int RowEffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"UPDATE TestTypes
-                               SET 
-                                  TestTypeTitle = @TestTypeTitle
-                                 ,TestTypeDescription = @TestTypeDescription
-                                 ,TestTypeFees = @TestTypeFees
-                             WHERE TestTypeID = @TestTypeID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
-            command.Parameters.AddWithValue("@TestTypeTitle", TestTypeTitle);
-            command.Parameters.AddWithValue("@TestTypeDescription", TestTypeDescription);
-            command.Parameters.AddWithValue("@TestTypeFees", TestTypeFees);
-
-
             try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
 
-                RowEffected = command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand("SP_UpdateTestType", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
 
+                        command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+                        command.Parameters.AddWithValue("@TestTypeTitle", TestTypeTitle);
+                        command.Parameters.AddWithValue("@TestTypeDescription", TestTypeDescription);
+                        command.Parameters.AddWithValue("@TestTypeFees", TestTypeFees);
+
+
+                        RowEffected = command.ExecuteNonQuery();
+
+                    }
+                }
 
             }
             catch (Exception ex)
@@ -121,15 +114,9 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
 
             return (RowEffected > 0);
         }
-
-
 
     }
 }

@@ -10,44 +10,43 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLDataAccess
 {
-    public class clsLocalDrivingLicenseAppData
+    public class LocalDrivingLicenseAppData
     {
         public static bool GetLocalDLAppInfoFromView(int LocalDrivingLicenseApplicationID, ref string ClassName, ref byte PassedTestCount)
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"select * from LocalDrivingLicenseApplications_View
-                                 where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
+                    connection.Open();
 
-                    ClassName = (string)reader["ClassName"];
-                    PassedTestCount = (byte)reader["PassedTestCount"];
+                    using (SqlCommand command = new SqlCommand("SP_GetLocalDLAppInfoFromView", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
 
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Found = true;
+
+                                ClassName = (string)reader["ClassName"];
+                                PassedTestCount = (byte)reader["PassedTestCount"];
+
+                            }
+                        }
+                    }
                 }
-                reader.Close();
+
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Found;
@@ -57,34 +56,32 @@ namespace DVLDataAccess
         {
             string ClassName = string.Empty;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"select ClassName from LocalDrivingLicenseApplications_View
-                                 where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
             try
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    ClassName = (string)reader["ClassName"];
+                    connection.Open();
 
+                    using (SqlCommand command = new SqlCommand("SP_GetClassNameByLDLAppID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                ClassName = (string)reader["ClassName"];
+                            }
+                        }
+                    }
                 }
-                reader.Close();
+
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return ClassName;
@@ -94,34 +91,32 @@ namespace DVLDataAccess
         {
             int LicenseClassID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"select LicenseClassID from LocalDrivingLicenseApplications
-                            where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
             try
             {
-                connection.Open();
-
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    LicenseClassID = Convert.ToInt32( Result );
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_LicenseClassIDByLDLAppID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            LicenseClassID = Convert.ToInt32(Result);
+                        }
+
+                    }
                 }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return LicenseClassID;
@@ -131,24 +126,26 @@ namespace DVLDataAccess
         {
             bool Status = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"select Status = 'Completed' from LocalDrivingLicenseApplications_View
-                             where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID and Status = 'Completed'";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
             try
             {
-                connection.Open();
 
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Status = true;
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_CheckIfStatusIsCompleted", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            Status = true;
+                        }
+                    }
                 }
 
             }
@@ -156,10 +153,6 @@ namespace DVLDataAccess
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Status = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Status;
@@ -169,34 +162,32 @@ namespace DVLDataAccess
         {
             DataTable dtLDLicenseApp = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = "select * from LocalDrivingLicenseApplications_View";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
             try
             {
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtLDLicenseApp.Load(reader);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_ListsLocalDrivingLicenseApps", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtLDLicenseApp.Load(reader);
+                            }
+                        }
+                    }
                 }
 
-                reader.Close();
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return dtLDLicenseApp;
         }
@@ -205,74 +196,34 @@ namespace DVLDataAccess
         {
             DataTable dtLDLicenseApp = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select * from LocalDrivingLicenseApplications_View
-                                  where NationalNo LIKE '' + @NationalNo +'%' ";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@NationalNo", NationalNo);
-
             try
             {
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtLDLicenseApp.Load(reader);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_FilterByNationalNoLists", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@NationalNo", NationalNo);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtLDLicenseApp.Load(reader);
+                            }
+                        }
+                    }
                 }
 
-                reader.Close();
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
-
-            return dtLDLicenseApp;
-        }
-
-        public static DataTable FilterByLDLAppID(int LocalDrivingLicenseApplicationID)
-        {
-            DataTable dtLDLicenseApp = new DataTable();
-
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select * from LocalDrivingLicenseApplications_View
-                                  where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID ";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
-            try
-            {
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    dtLDLicenseApp.Load(reader);
-                }
-
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                clsErrorLoggerDAL.EventLogError(ex.Message);
-
-            }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return dtLDLicenseApp;
         }
@@ -281,74 +232,33 @@ namespace DVLDataAccess
         {
             DataTable dtLDLicenseApp = new DataTable();
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select * from LocalDrivingLicenseApplications_View
-                                  where FullName LIKE '' + @FullName +'%' ";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@FullName", FullName);
-
             try
             {
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    dtLDLicenseApp.Load(reader);
-                }
+                    connection.Open();
 
-                reader.Close();
+                    using (SqlCommand command = new SqlCommand("SP_FilterByFullName", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@FullName", FullName);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtLDLicenseApp.Load(reader);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
-
-            return dtLDLicenseApp;
-        }
-
-        public static DataTable FilterByStatus(string Status)
-        {
-            DataTable dtLDLicenseApp = new DataTable();
-
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select * from LocalDrivingLicenseApplications_View
-                                  where Status LIKE '' + @Status +'%' ";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@Status", Status);
-
-            try
-            {
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    dtLDLicenseApp.Load(reader);
-                }
-
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                clsErrorLoggerDAL.EventLogError(ex.Message);
-
-            }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return dtLDLicenseApp;
         }
@@ -357,35 +267,33 @@ namespace DVLDataAccess
         {
             int LastID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"INSERT INTO LocalDrivingLicenseApplications
-                             VALUES
-	                               (@ApplicationID, @LicenseClassID);
-                             select SCOPE_IDENTITY();";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-            command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    LastID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_AddNewLocalDrivingLicenseApp", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+                        command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            LastID = Convert.ToInt32(Result);
+                        }
+
+                    }
                 }
 
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
             }
 
 
@@ -396,23 +304,27 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select Found = 1 from LocalDrivingLicenseApplications_View
-                                where (NationalNo = @NationalNo and ClassName = @ClassName)";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@NationalNo", NationalNo);
-            command.Parameters.AddWithValue("@ClassName", ClassName);
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_CheckIfPersonHasTheSameApp", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@NationalNo", NationalNo);
+                        command.Parameters.AddWithValue("@ClassName", ClassName);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            Found = true;
+                        }
+
+                    }
                 }
 
             }
@@ -420,10 +332,6 @@ namespace DVLDataAccess
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Found;
@@ -433,24 +341,26 @@ namespace DVLDataAccess
         {
             int ApplicationID = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"SELECT LocalDrivingLicenseApplications.ApplicationID
-                                FROM  LocalDrivingLicenseApplications
-                             where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    ApplicationID = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_GetApplicationIDFromLocalDLAppTable", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            ApplicationID = Convert.ToInt32(Result);
+                        }
+
+                    }
                 }
 
             }
@@ -459,11 +369,6 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return ApplicationID;
         }
@@ -472,23 +377,30 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select Found = 1 from LocalDrivingLicenseApplications_View
-                                where (NationalNo = @NationalNo and ClassName = @ClassName) and ( Status = 'Cancelled' )";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@NationalNo", NationalNo);
-            command.Parameters.AddWithValue("@ClassName", ClassName);
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_CheckIfPersonCancelledApp", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@NationalNo", NationalNo);
+                        command.Parameters.AddWithValue("@ClassName", ClassName);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            Found = true;
+                        }
+                        else
+                        {
+                            Found = false;
+                        }
+                    }
                 }
 
             }
@@ -496,10 +408,6 @@ namespace DVLDataAccess
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Found;
@@ -509,23 +417,27 @@ namespace DVLDataAccess
         {
             bool Found = false;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-            string query = @"select Found = 1 from LocalDrivingLicenseApplications_View
-                                where (NationalNo = @NationalNo and ClassName = @ClassName) and ( Status = 'New' )";
-
-            SqlCommand command = new SqlCommand(@query, connection);
-
-            command.Parameters.AddWithValue("@NationalNo", NationalNo);
-            command.Parameters.AddWithValue("@ClassName", ClassName);
-
             try
             {
-                connection.Open();
-                object Result = command.ExecuteScalar();
-
-                if (Result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Found = true;
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_CheckIfStatusNew", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@NationalNo", NationalNo);
+                        command.Parameters.AddWithValue("@ClassName", ClassName);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            Found = true;
+                        }
+
+                    }
                 }
 
             }
@@ -533,10 +445,6 @@ namespace DVLDataAccess
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
                 Found = false;
-            }
-            finally
-            {
-                connection.Close();
             }
 
             return Found;
@@ -546,29 +454,27 @@ namespace DVLDataAccess
         {
             int RowEffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @"  delete from Tests where TestAppointmentID in ( select TestAppointmentID from TestAppointments where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID)
-                               delete from TestAppointments    where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-                               delete from LocalDrivingLicenseApplications    where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID ";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
             try
             {
-                connection.Open();
-                RowEffected = command.ExecuteNonQuery();
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_DeleteLocalDLApplication", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                        RowEffected = command.ExecuteNonQuery();
+
+                    }
+                }
             }
             catch (Exception ex)
             {
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
-            }
-            finally
-            {
-                connection.Close();
             }
 
 
@@ -579,23 +485,25 @@ namespace DVLDataAccess
         {
             int PassedCount = -1;
 
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = "select PassedTestCount from LocalDrivingLicenseApplications_View     where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
             try
             {
-                connection.Open();
-                
-                object Result = command.ExecuteScalar();
-
-                if (Result != null) 
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    PassedCount = Convert.ToInt32(Result);
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_PassedTestCount", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            PassedCount = Convert.ToInt32(Result);
+                        }
+                    }
                 }
 
             }
@@ -604,46 +512,35 @@ namespace DVLDataAccess
                 clsErrorLoggerDAL.EventLogError(ex.Message);
 
             }
-            finally
-            {
-                connection.Close();
-            }
-
 
             return PassedCount;
         }
 
         public static bool IsThereAnActiveScheduledTest(int LocalDrivingLicenseApplicationID, int TestTypeID)
-
         {
-
-            bool Result = false;
-
-            SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring);
-
-            string query = @" SELECT top 1 Found=1
-                            FROM LocalDrivingLicenseApplications INNER JOIN
-                                 TestAppointments ON LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID = TestAppointments.LocalDrivingLicenseApplicationID 
-                            WHERE
-                            (LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID)  
-                            AND(TestAppointments.TestTypeID = @TestTypeID) and isLocked=0
-                            ORDER BY TestAppointments.TestAppointmentID desc";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-            command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+            bool IsActive = false;
 
             try
             {
-                connection.Open();
-
-                object result = command.ExecuteScalar();
-
-
-                if (result != null)
+                using (SqlConnection connection = new SqlConnection(clsConnectionSetting.connectionstring))
                 {
-                    Result = true;
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("SP_IsThereAnActiveScheduledTest", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+                        command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && Result != DBNull.Value)
+                        {
+                            IsActive = true;
+                        }
+
+                    }
                 }
 
             }
@@ -653,12 +550,7 @@ namespace DVLDataAccess
 
             }
 
-            finally
-            {
-                connection.Close();
-            }
-
-            return Result;
+            return IsActive;
         }
 
     }
